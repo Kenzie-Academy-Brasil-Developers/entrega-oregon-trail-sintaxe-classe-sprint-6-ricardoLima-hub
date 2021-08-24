@@ -1,8 +1,32 @@
 class Traveler {
     constructor (name) {
-        this.name = name;
-        this.amountFood = 1;
-        this.isHealthy = true;
+        this._name = name;
+        this._amountFood = 1;
+        this._isHealthy = true;
+    }
+
+    get amountFood () {
+        return this._amountFood
+    }
+
+    get name () {
+        return this._name
+    }
+
+    get health () {
+        return this._isHealthy
+    }
+
+    set amountFood (value) {
+        this._amountFood = value
+    }
+
+    set name(value){
+        this._name = value
+    }
+
+    set health (value) {
+        this._isHealthy = value
     }
 
     hunt() {
@@ -21,10 +45,25 @@ class Traveler {
 
 class Wagon {
     constructor (capacity) {
-        this.capacity = capacity;
-        this.passengers = [];
+        this._capacity = capacity;
+        this._passengers = [];
     }
 
+    get capacity () {
+        return this._capacity
+    }
+
+    get passengers () {
+        return this._passengers
+    }
+
+    set capacity (value) {
+        this._capacity = value
+    }
+
+    set passengers (value) {
+        this._passengers = value
+    }
     getAvailableSeatCount() {
        if (this.passengers.length === 0) {
            return this.capacity
@@ -42,18 +81,19 @@ class Wagon {
     }
 
     shouldQuarantine () {
-        for(let i = 0; i < this.passengers.length; i++) {
-            if (this.passengers[i].isHealthy === false) {
-                return true
-            } 
-        }
+        let output = false
+        this.passengers.map((item) => {
+            if (!item.isHealthy) {
+                return output = true
+            }
+        })
+        return output
     }
 
     totalFood () {
-        let output = 0
-        for (let i = 0; i < this.passengers.length; i++) {
-            output += this.passengers[i].amountFood
-        }
+        let output =  this.passengers.reduce((totalFood, {amountFood}) => {
+            return totalFood + amountFood
+        },0)
         return output
     }
 }
